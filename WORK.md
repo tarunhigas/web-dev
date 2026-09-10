@@ -3,14 +3,14 @@
 ## Project: Personal Portfolio Website
 
 **Built with:** Vanilla HTML5, CSS3, JavaScript (ES6+)  
-**Author:** Alex Chen  
+**Author:** S Tarunhiga  
 **Submitted for:** First Year Web Development Assignment
 
 ---
 
 ## Overview
 
-A fully functional, responsive personal portfolio website built from scratch using only HTML, CSS, and JavaScript — no frameworks, no libraries, no build tools. The goal was to demonstrate a strong understanding of core web development fundamentals across three domains: structure, styling, and interactivity.
+A fully functional, responsive personal portfolio website built from scratch using only HTML, CSS, and JavaScript — no frameworks, no libraries, no build tools. The portfolio includes 6 working sub-projects, each as a standalone page linked from the Projects section.
 
 ---
 
@@ -18,144 +18,189 @@ A fully functional, responsive personal portfolio website built from scratch usi
 
 ```
 web-dev/
-├── index.html    — Page structure and content
-├── style.css     — All styling, layout, and animations
-├── script.js     — All interactivity and dynamic behaviour
-└── WORK.md       — This file
+├── index.html              — Main portfolio page
+├── style.css               — All styling and layout
+├── script.js               — All interactivity
+├── WORK.md                 — This file
+└── projects/
+    ├── ecommerce.html      — E-Commerce Landing Page
+    ├── taskmanager.html    — Task Manager App
+    ├── weather.html        — Weather Dashboard
+    ├── blog.html           — Blog Platform UI
+    ├── calculator.html     — Scientific Calculator
+    └── cssshowcase.html    — CSS Animation Showcase
 ```
 
 ---
 
-## What Was Built
+## Main Portfolio — `index.html`
 
-### 1. `index.html` — Semantic Page Structure
+### Sections
 
-- **Navbar** with logo, navigation links, dark mode toggle, and hamburger menu for mobile
-- **Hero section** with name, animated typewriter role text, bio, CTA buttons, floating avatar, and animated badges
-- **About section** with bio text, quick-info card, and animated fact counters
-- **Skills section** with animated progress bars (frontend skills) and tag pills (tools)
-- **Projects section** with 6 project cards and a category filter bar (All / Web / Tools / UI)
-- **Contact section** with contact info links and a validated contact form
-- **Footer** with nav links and a back-to-top button
-- Proper semantic tags used throughout: `<nav>`, `<section>`, `<footer>`, `<form>`, `<label>`, `<main>`
-- `aria-label` and `aria-expanded` attributes added for accessibility
+- **Navbar** — logo, navigation links, dark mode toggle, hamburger menu for mobile
+- **Hero** — name, static role text, bio, CTA buttons, avatar graphic
+- **About** — personal bio, quick-info card (degree, location, email, languages)
+- **Skills** — progress bars for HTML/CSS/JS/Responsive Design; tag pills for tools
+- **Projects** — 6 cards with category filter (All / Web / Tools / UI), each with a working Live Demo link
+- **Contact** — contact info links + validated contact form
+- **Footer** — nav links and back-to-top button
 
----
+### `style.css`
 
-### 2. `style.css` — Responsive Design & Animations
+- CSS custom properties for the full design system (colors, shadows, spacing, typography)
+- Light and dark themes via `[data-theme="dark"]` on the root element
+- CSS Grid for hero, about, skills, and contact layouts
+- Flexbox for navbar, buttons, tags, and footer
+- `clamp()` for fluid font sizes; `minmax()` + `auto-fill` for responsive project grid
+- Responsive breakpoints at 900px (tablet) and 640px (mobile)
+- No animations or transitions — clean, static styling throughout
 
-#### Design System
-- CSS custom properties (variables) used for the entire design system — colors, shadows, spacing, typography, border-radius, and transitions
-- Two complete themes defined: **light mode** and **dark mode**, toggled via `[data-theme="dark"]` on the root element
+### `script.js`
 
-#### Layout
-- CSS Grid used for hero, about, skills, and contact sections
-- Flexbox used for navbar, buttons, tags, footer, and inline components
-- `clamp()` used for fluid font sizes that scale with viewport width
-- `minmax()` and `auto-fill` used for the responsive project card grid
-
-#### Responsive Breakpoints
-- **≤ 900px (tablet):** Hero switches to single column, about/skills/contact stack vertically, floating badges hidden
-- **≤ 640px (mobile):** Hamburger menu replaces nav links, avatar shrinks, project grid goes single column
-
-#### Animations & Effects
-- `@keyframes` animations: `fadeInLeft`, `fadeInRight`, `fadeInUp`, `fadeIn`, `float`, `scrollBounce`, `blink`
-- `.reveal` class + `.visible` toggled by IntersectionObserver for scroll-triggered entrance animations
-- Skill bars animate width from 0 to target percentage when scrolled into view
-- Floating hero badges use staggered `animation-delay` for a natural feel
-- Hover effects on cards, buttons, tags, nav links, and contact items
-- Gradient text on the hero name using `background-clip: text`
+1. **Dark Mode Toggle** — reads/saves preference in `localStorage`, toggles `data-theme` on `<html>`
+2. **Navbar Active Link** — highlights the current section's nav link on scroll using `offsetTop`
+3. **Mobile Hamburger Menu** — toggles nav open/close, closes on link click and `Escape` key
+4. **Project Filter** — shows/hides cards by toggling `.hidden` based on `data-category`
+5. **Contact Form Validation** — validates all 4 fields with per-field errors and live clearing; simulated async submit
+6. **Back to Top Button** — appears after 400px scroll, smooth scrolls to top
+7. **Smooth Scroll** — all anchor links offset-corrected for the fixed navbar height
+8. **Keyboard Accessibility** — `Escape` closes the mobile menu
 
 ---
 
-### 3. `script.js` — JavaScript Features
+## Sub-Projects
 
-#### 1. Dark Mode Toggle
-- Reads saved preference from `localStorage` on page load
-- Toggles `data-theme` attribute on `<html>` and saves new preference
-- Icon switches between 🌙 and ☀️
+### 1. E-Commerce Landing Page (`projects/ecommerce.html`)
 
-#### 2. Navbar Scroll Behaviour
-- Adds `.scrolled` class (background + shadow) after scrolling 50px
-- Highlights the correct nav link as the user scrolls through sections using `offsetTop` calculations
+A product listing page for a fictional store called ShopZone.
 
-#### 3. Mobile Hamburger Menu
-- Toggles `.open` class on nav links and hamburger icon
-- Animates hamburger spans into an × icon using CSS transforms
-- Closes automatically when a nav link is clicked
-- Closes on `Escape` key press (keyboard accessibility)
+**Features:**
+- 8 products across 3 categories (Clothing, Electronics, Accessories)
+- Category filter chips
+- Add to Cart functionality with live cart count in the navbar
+- Slide-in cart sidebar with quantity controls (+ / −) and item removal
+- Checkout simulation with toast notification
+- NEW / SALE badges on product cards
+- Fully responsive grid
 
-#### 4. Typewriter Effect
-- Cycles through an array of role strings
-- Uses a recursive `setTimeout` state machine with separate type/delete speeds
-- Pauses at the end of each word before deleting
-- Blinking cursor implemented with a CSS `@keyframes` animation
-
-#### 5. Scroll Reveal (IntersectionObserver)
-- All major section elements start invisible (`opacity: 0`, `translateY(30px)`)
-- `IntersectionObserver` watches each element and adds `.visible` when 12% is in view
-- Each element animates once then is unobserved (no re-triggering)
-
-#### 6. Skill Bar Animation
-- `IntersectionObserver` triggers CSS width transition on `.skill-bar-fill` elements
-- Width value read from `data-width` attribute, applied via JavaScript when in viewport
-
-#### 7. Project Filter
-- Filter buttons read `data-filter` attribute
-- Cards are shown/hidden by toggling a `.hidden` class based on their `data-category`
-- Active button state managed by removing/adding `.active` class
-
-#### 8. Contact Form Validation
-- Client-side validation on all four fields (name, email, subject, message)
-- Email validated with a regex pattern
-- Per-field error messages displayed beneath each input
-- Errors cleared as the user types (live feedback)
-- On valid submit: button shows "Sending..." state for 1.2s (simulated async), then form resets and a success banner appears
-
-#### 9. Back to Top Button
-- Opacity and `pointer-events` toggled based on scroll position (appears after 400px)
-- Smooth scroll to top on click
-
-#### 10. Smooth Scroll
-- All `<a href="#...">` anchor links use `scrollTo` with `behavior: 'smooth'`
-- Offset calculated to account for the fixed navbar height using CSS variable value
-
-#### 11. Count-Up Animation (Fact Numbers)
-- `IntersectionObserver` triggers a `setInterval` counter on each `.fact-number`
-- Counts from 0 to the target number, then stops cleanly
-- Non-numeric values (like "1st") are skipped
-
-#### 12. Keyboard Accessibility
-- `Escape` key closes the mobile menu
-- All interactive elements are natively focusable
-- `aria-label` on icon-only buttons, `aria-expanded` on hamburger toggle
+**Concepts:** DOM manipulation, array state management, dynamic rendering, event delegation
 
 ---
 
-## Key Concepts Demonstrated
+### 2. Task Manager App (`projects/taskmanager.html`)
+
+A to-do app with `localStorage` persistence.
+
+**Features:**
+- Add tasks with title, priority (High / Medium / Low), and optional due date
+- Edit existing tasks inline
+- Mark tasks as done (strikethrough + opacity)
+- Delete tasks
+- Filter by All / Active / Done / High priority
+- Live search
+- Overdue date detection (highlighted in red)
+- Progress bar showing % of tasks completed
+- Stats counter (total / done / pending)
+- Seeded with 3 sample tasks on first load
+
+**Concepts:** localStorage, CRUD operations, date comparison, IntersectionObserver-free state rendering
+
+---
+
+### 3. Weather Dashboard (`projects/weather.html`)
+
+A weather UI with simulated data for 5 Indian cities (no API key required).
+
+**Features:**
+- Current conditions: temperature, feels like, humidity, wind, visibility
+- 5-day forecast with weather emoji and high/low temps
+- UV index, atmospheric pressure, sunrise/sunset
+- City search by name
+- Quick-switch city chips
+- Dark glassmorphism UI with gradient background
+
+**Cities:** Hyderabad, Mumbai, Delhi, Bangalore, Chennai
+
+**Concepts:** Data-driven rendering, conditional styling, search filtering
+
+---
+
+### 4. Blog Platform UI (`projects/blog.html`)
+
+A blog UI with readable sample articles.
+
+**Features:**
+- Featured post card + grid of remaining posts
+- 5 sample articles on JavaScript, CSS, Git, HTML, and career topics
+- Tag-based filtering (JavaScript / CSS / Git / HTML / Career)
+- Live search across titles and excerpts
+- Click-to-read modal with full article content
+- Sidebar with trending posts and tag cloud
+- Dark mode toggle (independent from portfolio)
+
+**Concepts:** Modal UI, search + filter composition, dynamic rendering, theme toggling
+
+---
+
+### 5. Scientific Calculator (`projects/calculator.html`)
+
+A fully functional calculator with scientific functions.
+
+**Features:**
+- Basic operations: +, −, ×, ÷, %
+- Scientific: sin, cos, tan, log, ln, √, |x|, xʸ, π, e
+- DEG / RAD mode toggle
+- Live expression preview in the display
+- Calculation history panel (last 20, clickable to reuse)
+- Clear history button
+- Full keyboard support (0–9, operators, Enter, Backspace, Escape)
+- Expression evaluated using `Function()` with safe symbol substitution
+
+**Concepts:** Expression parsing, `Function()` eval pattern, keyboard events, state history
+
+---
+
+### 6. CSS Animation Showcase (`projects/cssshowcase.html`)
+
+A visual demo of pure CSS techniques, with minimal JS only for particle spawning.
+
+**Sections:**
+
+| Category | Demos |
+|---|---|
+| Loading Animations | Spinner, Bouncing Dots, Progress Bar, Skeleton Screen, Pulse Ring, SVG Ring |
+| Button Hover Effects | Lift + Shadow, Background Fill, Neon Glow, Slide Background, Scale Pop, Animated Gradient Border |
+| Card Effects | 3D Tilt, Flip Card (front/back), Reveal Overlay |
+| Text Effects | Gradient Text, Glitch on Hover, Typewriter Loop, Pulsing Neon |
+| Animated Backgrounds | Shifting Gradient, Scrolling Stripes, Floating Particles |
+
+**Concepts:** `@keyframes`, CSS transforms, `::before`/`::after` pseudo-elements, `animation-delay`, SVG stroke animation, `perspective`/`rotateY` for 3D, `background-clip: text`
+
+---
+
+## Key Concepts Demonstrated Across All Files
 
 | Concept | Where Used |
 |---|---|
-| CSS Variables | Entire design system, dark mode |
-| CSS Grid | Hero, About, Skills, Contact layouts |
-| Flexbox | Navbar, buttons, footer, tags |
-| Responsive Design | Media queries at 900px and 640px |
-| CSS Animations | Hero float, scroll reveal, typewriter cursor |
-| IntersectionObserver API | Scroll reveal, skill bars, count-up |
-| localStorage | Dark mode persistence |
-| DOM Manipulation | Filter, form, nav, theme |
+| CSS Variables | Full design system, dark mode |
+| CSS Grid | Portfolio layout, product grid, forecast grid |
+| Flexbox | Navbar, buttons, footer, tags, form rows |
+| Responsive Design | Media queries at 900px and 640px throughout |
+| localStorage | Dark mode persistence, task manager data |
+| DOM Manipulation | Filter, form, nav, cart, tasks, calculator |
 | Event Listeners | scroll, click, keydown, input, submit |
-| Form Validation | Contact form with regex + live feedback |
-| Accessibility | ARIA attributes, keyboard navigation |
+| Form Validation | Contact form + task inputs with live feedback |
+| Accessibility | ARIA attributes, keyboard navigation, semantic HTML |
+| CSS Animations | Showcase page — loaders, hovers, cards, text, backgrounds |
+| Expression Evaluation | Calculator using `Function()` with safe substitution |
+| Data-driven Rendering | Products, tasks, weather, blog posts all rendered from JS arrays |
 
 ---
 
-## Improvements Over a Basic Implementation
+## Notes
 
-1. **No frameworks** — everything built with native browser APIs to show deep understanding
-2. **Performance** — `IntersectionObserver` used instead of scroll event listeners for animations (far more efficient)
-3. **Accessibility** — ARIA roles, keyboard support, and semantic HTML throughout
-4. **Dark mode** with persistence — not just a visual trick, state survives page reload
-5. **Form UX** — per-field validation with live clearing, not just a single alert on submit
-6. **Responsive at every breakpoint** — tested at mobile, tablet, and desktop widths
-7. **CSS custom properties** — makes theming and maintenance clean and scalable
+- No frameworks, no libraries, no build tools anywhere in the project
+- All 6 sub-projects are self-contained single HTML files
+- Each sub-project includes a "← Back to Portfolio" link
+- Weather dashboard uses mock data — no API key or network request needed
+- Task manager data persists across page reloads via `localStorage`

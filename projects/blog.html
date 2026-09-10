@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DevBlog — Blog Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --border: #e2e8f0;
+      --text: #1e293b;
+      --text-muted: #64748b;
+      --accent: #6366f1;
+      --radius: 12px;
+      --shadow: 0 2px 10px rgba(0,0,0,0.07);
+    }
+    [data-theme="dark"] {
+      --bg: #0f172a; --surface: #1e293b; --border: #334155;
+      --text: #f1f5f9; --text-muted: #94a3b8;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); }
+    a { text-decoration:none; color:inherit; }
+    button { cursor:pointer; border:none; font-family:inherit; }
+
+    /* NAV */
+    nav {
+      background:var(--surface); border-bottom:1px solid var(--border);
+      position:sticky; top:0; z-index:100; box-shadow:var(--shadow);
+    }
+    .nav-inner {
+      max-width:1100px; margin:0 auto; padding:0 1.5rem;
+      height:60px; display:flex; align-items:center; justify-content:space-between;
+    }
+    .nav-logo { font-size:1.2rem; font-weight:700; color:var(--accent); }
+    .nav-right { display:flex; align-items:center; gap:1rem; }
+    .back-link { font-size:0.82rem; color:var(--text-muted); }
+    .back-link:hover { color:var(--accent); }
+    .theme-btn {
+      width:34px; height:34px; border-radius:8px;
+      background:var(--bg); border:1px solid var(--border);
+      font-size:1rem; display:grid; place-items:center;
+    }
+    .nav-search {
+      padding:0.4rem 0.85rem; border:1px solid var(--border);
+      border-radius:50px; font-size:0.82rem; outline:none;
+      background:var(--bg); color:var(--text); width:180px;
+    }
+    .nav-search:focus { border-color:var(--accent); }
+
+    /* HERO */
+    .blog-hero {
+      background:linear-gradient(135deg,#6366f1,#a855f7);
+      color:#fff; padding:3rem 1.5rem; text-align:center;
+    }
+    .blog-hero h1 { font-size:clamp(1.6rem,3vw,2.5rem); margin-bottom:0.5rem; }
+    .blog-hero p { opacity:0.85; font-size:0.95rem; }
+
+    /* TAGS */
+    .tag-strip {
+      max-width:1100px; margin:0 auto;
+      padding:1.25rem 1.5rem; display:flex; gap:0.5rem; flex-wrap:wrap;
+    }
+    .tag-chip {
+      padding:0.3rem 0.85rem; border-radius:50px;
+      font-size:0.78rem; font-weight:500;
+      border:1px solid var(--border); background:var(--surface);
+      color:var(--text-muted);
+    }
+    .tag-chip.active, .tag-chip:hover {
+      background:var(--accent); color:#fff; border-color:var(--accent);
+    }
+
+    /* LAYOUT */
+    .page-layout {
+      max-width:1100px; margin:0 auto; padding:0 1.5rem 4rem;
+      display:grid; grid-template-columns:1fr 300px; gap:2.5rem;
+    }
+
+    /* FEATURED */
+    .featured-post {
+      background:var(--surface); border:1px solid var(--border);
+      border-radius:var(--radius); overflow:hidden;
+      box-shadow:var(--shadow); margin-bottom:2rem;
+      cursor:pointer;
+    }
+    .featured-img {
+      height:220px; display:grid; place-items:center;
+      font-size:5rem;
+    }
+    .featured-body { padding:1.5rem; }
+    .featured-meta { display:flex; gap:0.75rem; align-items:center; margin-bottom:0.75rem; flex-wrap:wrap; }
+    .post-tag {
+      background:#eef2ff; color:var(--accent);
+      padding:0.2rem 0.65rem; border-radius:50px;
+      font-size:0.72rem; font-weight:600;
+    }
+    .post-date { font-size:0.78rem; color:var(--text-muted); }
+    .read-time { font-size:0.78rem; color:var(--text-muted); }
+    .featured-body h2 { font-size:1.3rem; margin-bottom:0.5rem; line-height:1.3; }
+    .featured-body p { color:var(--text-muted); font-size:0.9rem; line-height:1.6; }
+    .read-more {
+      display:inline-block; margin-top:1rem;
+      background:var(--accent); color:#fff;
+      padding:0.5rem 1.25rem; border-radius:50px;
+      font-size:0.82rem; font-weight:600;
+    }
+
+    /* GRID */
+    .posts-grid { display:grid; grid-template-columns:1fr 1fr; gap:1.25rem; }
+    .post-card {
+      background:var(--surface); border:1px solid var(--border);
+      border-radius:var(--radius); overflow:hidden;
+      box-shadow:var(--shadow); cursor:pointer;
+    }
+    .post-card:hover { box-shadow:0 6px 20px rgba(0,0,0,0.1); }
+    .post-card-img { height:120px; display:grid; place-items:center; font-size:3rem; }
+    .post-card-body { padding:1rem; }
+    .post-card-body h3 { font-size:0.95rem; font-weight:600; margin-bottom:0.4rem; line-height:1.35; }
+    .post-card-body p { font-size:0.82rem; color:var(--text-muted); line-height:1.5; margin-bottom:0.75rem; }
+    .post-footer { display:flex; align-items:center; justify-content:space-between; }
+    .author-row { display:flex; align-items:center; gap:0.5rem; }
+    .author-avatar {
+      width:26px; height:26px; border-radius:50%;
+      background:var(--accent); color:#fff;
+      display:grid; place-items:center; font-size:0.7rem; font-weight:700;
+    }
+    .author-name { font-size:0.78rem; color:var(--text-muted); }
+
+    /* SIDEBAR */
+    .sidebar { display:flex; flex-direction:column; gap:1.5rem; }
+    .sidebar-card {
+      background:var(--surface); border:1px solid var(--border);
+      border-radius:var(--radius); padding:1.25rem;
+      box-shadow:var(--shadow);
+    }
+    .sidebar-title { font-size:0.88rem; font-weight:700; margin-bottom:1rem; color:var(--accent); text-transform:uppercase; letter-spacing:0.05em; }
+    .trending-list { display:flex; flex-direction:column; gap:0.85rem; }
+    .trending-item { display:flex; gap:0.75rem; align-items:flex-start; cursor:pointer; }
+    .trending-num { font-size:1.4rem; font-weight:700; color:var(--border); line-height:1; flex-shrink:0; }
+    .trending-title { font-size:0.85rem; font-weight:500; }
+    .trending-meta { font-size:0.75rem; color:var(--text-muted); margin-top:0.15rem; }
+    .tag-cloud { display:flex; flex-wrap:wrap; gap:0.5rem; }
+    .tag-pill {
+      padding:0.25rem 0.7rem; border-radius:50px;
+      font-size:0.75rem; border:1px solid var(--border);
+      color:var(--text-muted); background:var(--bg);
+    }
+    .tag-pill:hover { background:var(--accent); color:#fff; border-color:var(--accent); cursor:pointer; }
+
+    /* POST READER MODAL */
+    .modal-overlay {
+      display:none; position:fixed; inset:0;
+      background:rgba(0,0,0,0.6); z-index:200;
+      padding:2rem 1rem; overflow-y:auto;
+    }
+    .modal-overlay.open { display:flex; justify-content:center; align-items:flex-start; }
+    .modal-content {
+      background:var(--surface); border-radius:var(--radius);
+      max-width:680px; width:100%; padding:2rem; position:relative;
+    }
+    .modal-close {
+      position:absolute; top:1rem; right:1rem;
+      width:32px; height:32px; border-radius:50%;
+      background:var(--bg); border:1px solid var(--border);
+      font-size:1rem; display:grid; place-items:center; color:var(--text-muted);
+    }
+    .modal-tag { display:inline-block; margin-bottom:0.75rem; }
+    .modal-title { font-family:'Merriweather',serif; font-size:1.5rem; line-height:1.35; margin-bottom:0.75rem; }
+    .modal-meta { font-size:0.82rem; color:var(--text-muted); margin-bottom:1.5rem; }
+    .modal-body { font-size:0.95rem; line-height:1.8; color:var(--text-muted); }
+    .modal-body p { margin-bottom:1rem; }
+    .modal-body h3 { color:var(--text); margin:1.5rem 0 0.5rem; font-size:1.05rem; }
+    .modal-body code {
+      background:var(--bg); padding:0.15rem 0.4rem;
+      border-radius:4px; font-size:0.88rem; color:var(--accent);
+    }
+
+    footer { text-align:center; padding:1.5rem; font-size:0.8rem; color:var(--text-muted); background:var(--surface); border-top:1px solid var(--border); }
+
+    @media(max-width:900px){ .page-layout { grid-template-columns:1fr; } .sidebar { display:none; } }
+    @media(max-width:600px){ .posts-grid { grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo">✍️ DevBlog</div>
+    <div class="nav-right">
+      <input type="text" class="nav-search" id="nav-search" placeholder="Search posts..." />
+      <button class="theme-btn" id="theme-btn">🌙</button>
+      <a href="../index.html" class="back-link">← Portfolio</a>
+    </div>
+  </div>
+</nav>
+
+<div class="blog-hero">
+  <h1>Developer Stories &amp; Tutorials</h1>
+  <p>Thoughts on code, design, and everything in between.</p>
+</div>
+
+<div class="tag-strip" id="tag-strip"></div>
+
+<div class="page-layout">
+  <div>
+    <div id="featured-area"></div>
+    <div class="posts-grid" id="posts-grid"></div>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-card">
+      <div class="sidebar-title">Trending</div>
+      <div class="trending-list" id="trending-list"></div>
+    </div>
+    <div class="sidebar-card">
+      <div class="sidebar-title">Topics</div>
+      <div class="tag-cloud" id="tag-cloud"></div>
+    </div>
+  </aside>
+</div>
+
+<footer>DevBlog — A demo project by S Tarunhiga</footer>
+
+<!-- Post Reader Modal -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal-content">
+    <button class="modal-close" id="modal-close">✕</button>
+    <div id="modal-body-content"></div>
+  </div>
+</div>
+
+<script>
+  const posts = [
+    {
+      id:1, tag:'JavaScript', emoji:'🟨', gradient:'linear-gradient(135deg,#fef3c7,#fde68a)',
+      title:'Understanding Closures in JavaScript',
+      excerpt:'Closures are one of the most powerful and misunderstood features of JS. Here\'s a clear breakdown with practical examples.',
+      date:'Sep 5, 2026', readTime:'5 min read', author:'ST', featured:true,
+      content:`<h3>What is a Closure?</h3><p>A closure is a function that "remembers" the environment in which it was created — specifically the variables from the outer scope, even after that outer function has returned.</p><h3>A Simple Example</h3><p>Consider this: <code>function counter() { let count = 0; return () => ++count; }</code>. The returned arrow function still has access to <code>count</code> even after <code>counter()</code> finishes.</p><h3>Why Does This Matter?</h3><p>Closures are used everywhere — in event handlers, callbacks, module patterns, and React hooks. Understanding them deeply will make you a significantly better JS developer.</p><h3>Common Pitfalls</h3><p>The classic loop-with-closures bug: using <code>var</code> in a for loop creates a single shared binding. Switching to <code>let</code> or using an IIFE fixes it by creating a new scope per iteration.</p>`
+    },
+    {
+      id:2, tag:'CSS', emoji:'🎨', gradient:'linear-gradient(135deg,#e0e7ff,#ddd6fe)',
+      title:'CSS Grid vs Flexbox: When to Use Which',
+      excerpt:'Both Grid and Flexbox are powerful layout tools — but they\'re built for different jobs. Let\'s break it down.',
+      date:'Sep 2, 2026', readTime:'4 min read', author:'ST',
+      content:`<h3>The Core Difference</h3><p>Flexbox is one-dimensional — it lays items out in a row or a column. Grid is two-dimensional — it handles rows and columns simultaneously.</p><h3>When to Use Flexbox</h3><p>Use Flexbox for UI components and small-scale layouts: navbars, button groups, card footers, and centering a single item. It excels when you want items to naturally adjust to their content size.</p><h3>When to Use Grid</h3><p>Use Grid for page-level layouts — the overall structure of a page, magazine-style card grids, and any layout where you need precise control over both axes.</p><h3>Can You Use Both?</h3><p>Absolutely. It's very common to use Grid for the outer page layout and Flexbox inside individual components. They complement each other perfectly.</p>`
+    },
+    {
+      id:3, tag:'Git', emoji:'🐙', gradient:'linear-gradient(135deg,#d1fae5,#a7f3d0)',
+      title:'Git Commands Every Developer Should Know',
+      excerpt:'Beyond git add and git commit — the commands that will actually save you in real projects.',
+      date:'Aug 28, 2026', readTime:'6 min read', author:'ST',
+      content:`<h3>Beyond the Basics</h3><p>Most beginners know <code>git add</code>, <code>git commit</code>, and <code>git push</code>. But real-world development demands more.</p><h3>git stash</h3><p>Temporarily shelve changes so you can switch branches without committing half-done work. Use <code>git stash pop</code> to get them back.</p><h3>git log --oneline</h3><p>Get a clean, compact view of your commit history. Add <code>--graph</code> to visualize branches.</p><h3>git diff</h3><p>See exactly what changed before you commit. Use <code>git diff --staged</code> to review what's already staged.</p><h3>git reset vs git revert</h3><p><code>git reset</code> rewrites history — dangerous on shared branches. <code>git revert</code> creates a new commit that undoes a previous one — much safer for collaborative work.</p>`
+    },
+    {
+      id:4, tag:'HTML', emoji:'🧱', gradient:'linear-gradient(135deg,#fee2e2,#fca5a5)',
+      title:'Semantic HTML: Why It Matters More Than You Think',
+      excerpt:'Using the right HTML tags isn\'t just about being correct — it directly affects SEO, accessibility, and maintainability.',
+      date:'Aug 20, 2026', readTime:'3 min read', author:'ST',
+      content:`<h3>What is Semantic HTML?</h3><p>Semantic HTML means using elements that describe their meaning — <code>&lt;article&gt;</code>, <code>&lt;nav&gt;</code>, <code>&lt;header&gt;</code>, <code>&lt;main&gt;</code> — rather than wrapping everything in generic <code>&lt;div&gt;</code> tags.</p><h3>Why It Matters for Accessibility</h3><p>Screen readers use HTML semantics to navigate pages. A <code>&lt;button&gt;</code> is inherently focusable and keyboard-accessible; a <code>&lt;div onclick&gt;</code> is not. This directly affects users with disabilities.</p><h3>SEO Benefits</h3><p>Search engine crawlers understand semantic structure. Content inside an <code>&lt;article&gt;</code> or <code>&lt;h1&gt;</code> is weighted more heavily than the same text inside a generic div.</p>`
+    },
+    {
+      id:5, tag:'Career', emoji:'💼', gradient:'linear-gradient(135deg,#f0fdf4,#bbf7d0)',
+      title:'How I Built My First Portfolio as a CS Freshman',
+      excerpt:'The process, the mistakes, and what I learned building my first developer portfolio from scratch.',
+      date:'Aug 14, 2026', readTime:'7 min read', author:'ST',
+      content:`<h3>Why I Built It</h3><p>In my first semester of CS, I realised that having something to show — even as a beginner — was more valuable than a perfect resume. A portfolio is proof of work, not just claims about it.</p><h3>What I Used</h3><p>I deliberately avoided frameworks. Pure HTML, CSS, and Vanilla JS. The goal was to understand the fundamentals deeply before adding abstractions.</p><h3>The Mistakes I Made</h3><p>I spent too long making it "perfect" before shipping it. I rewrote the layout three times. I added dark mode before I had actual content. Ship first, polish later.</p><h3>What Actually Matters</h3><p>Recruiters spend 30 seconds on a portfolio. Make your name, your stack, and your projects instantly clear. Everything else is secondary.</p>`
+    },
+  ];
+
+  const allTags = [...new Set(posts.map(p => p.tag))];
+  let activeTag = 'all';
+  let searchQuery = '';
+
+  function getFiltered() {
+    return posts.filter(p => {
+      const tagMatch = activeTag === 'all' || p.tag === activeTag;
+      const searchMatch = !searchQuery || p.title.toLowerCase().includes(searchQuery.toLowerCase()) || p.excerpt.toLowerCase().includes(searchQuery.toLowerCase());
+      return tagMatch && searchMatch;
+    });
+  }
+
+  function render() {
+    const filtered = getFiltered();
+    const featured = filtered.find(p => p.featured) || filtered[0];
+    const rest = filtered.filter(p => p !== featured);
+
+    // Featured
+    const featuredArea = document.getElementById('featured-area');
+    if (featured) {
+      featuredArea.innerHTML = `
+        <div class="featured-post" onclick="openPost(${featured.id})">
+          <div class="featured-img" style="background:${featured.gradient}">${featured.emoji}</div>
+          <div class="featured-body">
+            <div class="featured-meta">
+              <span class="post-tag">${featured.tag}</span>
+              <span class="post-date">${featured.date}</span>
+              <span class="read-time">⏱ ${featured.readTime}</span>
+            </div>
+            <h2>${featured.title}</h2>
+            <p>${featured.excerpt}</p>
+            <span class="read-more">Read Article →</span>
+          </div>
+        </div>
+      `;
+    } else { featuredArea.innerHTML = ''; }
+
+    // Grid
+    document.getElementById('posts-grid').innerHTML = rest.map(p => `
+      <div class="post-card" onclick="openPost(${p.id})">
+        <div class="post-card-img" style="background:${p.gradient}">${p.emoji}</div>
+        <div class="post-card-body">
+          <div class="featured-meta" style="margin-bottom:0.5rem">
+            <span class="post-tag">${p.tag}</span>
+            <span class="read-time" style="font-size:0.72rem;color:var(--text-muted)">⏱ ${p.readTime}</span>
+          </div>
+          <h3>${p.title}</h3>
+          <p>${p.excerpt.substring(0,90)}…</p>
+          <div class="post-footer">
+            <div class="author-row">
+              <div class="author-avatar">${p.author}</div>
+              <span class="author-name">${p.date}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    `).join('') || '<p style="color:var(--text-muted);padding:1rem">No posts found.</p>';
+  }
+
+  function renderSidebar() {
+    // Trending
+    document.getElementById('trending-list').innerHTML = posts.slice(0,4).map((p,i) => `
+      <div class="trending-item" onclick="openPost(${p.id})">
+        <span class="trending-num">0${i+1}</span>
+        <div><div class="trending-title">${p.title}</div><div class="trending-meta">${p.readTime}</div></div>
+      </div>
+    `).join('');
+
+    // Tags
+    document.getElementById('tag-cloud').innerHTML = allTags.map(t => `
+      <span class="tag-pill" onclick="setTag('${t}')">${t}</span>
+    `).join('');
+  }
+
+  function renderTagStrip() {
+    document.getElementById('tag-strip').innerHTML =
+      ['all', ...allTags].map(t => `
+        <button class="tag-chip ${t === activeTag ? 'active' : ''}" onclick="setTag('${t}')">${t === 'all' ? 'All' : t}</button>
+      `).join('');
+  }
+
+  function setTag(tag) { activeTag = tag; renderTagStrip(); render(); }
+
+  function openPost(id) {
+    const p = posts.find(x => x.id === id);
+    if (!p) return;
+    document.getElementById('modal-body-content').innerHTML = `
+      <span class="post-tag modal-tag">${p.tag}</span>
+      <h2 class="modal-title">${p.title}</h2>
+      <div class="modal-meta">${p.date} &nbsp;·&nbsp; ⏱ ${p.readTime}</div>
+      <div class="modal-body">${p.content}</div>
+    `;
+    document.getElementById('modal-overlay').classList.add('open');
+  }
+
+  document.getElementById('modal-close').addEventListener('click', () => document.getElementById('modal-overlay').classList.remove('open'));
+  document.getElementById('modal-overlay').addEventListener('click', e => { if (e.target === document.getElementById('modal-overlay')) document.getElementById('modal-overlay').classList.remove('open'); });
+
+  document.getElementById('nav-search').addEventListener('input', e => { searchQuery = e.target.value; render(); });
+
+  // Dark mode
+  const themeBtn = document.getElementById('theme-btn');
+  themeBtn.addEventListener('click', () => {
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
+    themeBtn.textContent = isDark ? '🌙' : '☀️';
+  });
+
+  renderTagStrip();
+  renderSidebar();
+  render();
+</script>
+</body>
+</html>

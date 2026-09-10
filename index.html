@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Alex Chen | Portfolio</title>
+  <title>S Tarunhiga | Portfolio</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -13,7 +13,7 @@
   <!-- NAVBAR -->
   <nav class="navbar" id="navbar">
     <div class="nav-container">
-      <a href="#home" class="nav-logo">AC</a>
+      <a href="#home" class="nav-logo">T</a>
       <ul class="nav-links" id="nav-links">
         <li><a href="#about">About</a></li>
         <li><a href="#skills">Skills</a></li>
@@ -35,12 +35,12 @@
   <section class="hero" id="home">
     <div class="hero-content">
       <p class="hero-greeting">Hi, I'm</p>
-      <h1 class="hero-name">Alex Chen</h1>
+      <h1 class="hero-name">S Tarunhiga</h1>
       <div class="hero-roles">
-        <span class="role-text" id="role-text"></span><span class="cursor">|</span>
+        <span>Web Developer &amp; CS Student</span>
       </div>
       <p class="hero-bio">
-        A passionate developer who loves building clean, functional, and accessible web experiences.
+        I'm a CS student who enjoys building things for the web — from clean UIs to useful tools. Still learning, always experimenting.
       </p>
       <div class="hero-buttons">
         <a href="#projects" class="btn btn-primary">View My Work</a>
@@ -56,13 +56,6 @@
           </svg>
         </div>
       </div>
-      <div class="floating-badge badge-1">💻 Full Stack</div>
-      <div class="floating-badge badge-2">🎨 UI/UX</div>
-      <div class="floating-badge badge-3">⚡ Fast &amp; Clean</div>
-    </div>
-    <div class="scroll-hint">
-      <span>Scroll down</span>
-      <div class="scroll-arrow"></div>
     </div>
   </section>
 
@@ -74,13 +67,14 @@
       <div class="about-grid">
         <div class="about-text">
           <p>
-            I'm a first-year Computer Science student with a deep interest in web development and design.
-            I enjoy turning ideas into real, interactive products that live on the internet.
+            I'm a first-year Computer Science student at a college in India. I got into web dev a few months ago
+            and haven't really stopped since — there's something satisfying about writing code and instantly seeing
+            it show up in a browser.
           </p>
           <p>
-            When I'm not coding, you'll find me sketching UI mockups, exploring open-source projects,
-            or reading about new technologies. I believe great software is built at the intersection
-            of good code and great design.
+            I mostly work with vanilla HTML, CSS, and JavaScript for now. I'm also learning Python and a bit of C++
+            through my coursework. Outside of code I spend too much time on YouTube rabbit holes and occasionally
+            try to get better at chess.
           </p>
           <div class="about-facts">
             <div class="fact">
@@ -102,9 +96,9 @@
           <ul class="info-list">
             <li><span class="info-icon">🎓</span><span><strong>Degree:</strong> B.Tech Computer Science</span></li>
             <li><span class="info-icon">📍</span><span><strong>Location:</strong> India</span></li>
-            <li><span class="info-icon">💼</span><span><strong>Available for:</strong> Internships</span></li>
-            <li><span class="info-icon">📧</span><span><strong>Email:</strong> alex@example.com</span></li>
-            <li><span class="info-icon">🌐</span><span><strong>Languages:</strong> English, Hindi</span></li>
+            <li><span class="info-icon">💼</span><span><strong>Looking for:</strong> Internships &amp; projects</span></li>
+            <li><span class="info-icon">📧</span><span><strong>Email:</strong> starunhiga@example.com</span></li>
+            <li><span class="info-icon">🌐</span><span><strong>Languages:</strong> English, Telugu, Hindi</span></li>
           </ul>
           <a href="#" class="btn btn-primary" style="margin-top: 1.5rem; display:inline-block;">Download Resume</a>
         </div>
@@ -124,19 +118,19 @@
           <div class="skill-bars">
             <div class="skill-bar-item">
               <div class="skill-bar-label"><span>HTML5</span><span>90%</span></div>
-              <div class="skill-bar-track"><div class="skill-bar-fill" data-width="90"></div></div>
+              <div class="skill-bar-track"><div class="skill-bar-fill" style="width:90%"></div></div>
             </div>
             <div class="skill-bar-item">
               <div class="skill-bar-label"><span>CSS3</span><span>85%</span></div>
-              <div class="skill-bar-track"><div class="skill-bar-fill" data-width="85"></div></div>
+              <div class="skill-bar-track"><div class="skill-bar-fill" style="width:85%"></div></div>
             </div>
             <div class="skill-bar-item">
               <div class="skill-bar-label"><span>JavaScript</span><span>75%</span></div>
-              <div class="skill-bar-track"><div class="skill-bar-fill" data-width="75"></div></div>
+              <div class="skill-bar-track"><div class="skill-bar-fill" style="width:75%"></div></div>
             </div>
             <div class="skill-bar-item">
               <div class="skill-bar-label"><span>Responsive Design</span><span>80%</span></div>
-              <div class="skill-bar-track"><div class="skill-bar-fill" data-width="80"></div></div>
+              <div class="skill-bar-track"><div class="skill-bar-fill" style="width:80%"></div></div>
             </div>
           </div>
         </div>
@@ -185,7 +179,7 @@
             <h3>E-Commerce Landing Page</h3>
             <p>A fully responsive e-commerce product page with cart functionality, product gallery, and smooth animations.</p>
             <div class="project-links">
-              <a href="#" class="btn btn-sm btn-primary">Live Demo</a>
+              <a href="projects/ecommerce.html" class="btn btn-sm btn-primary">Live Demo</a>
               <a href="#" class="btn btn-sm btn-outline">GitHub</a>
             </div>
           </div>
@@ -202,7 +196,7 @@
             <h3>Task Manager App</h3>
             <p>A local-storage backed task manager with drag-and-drop reordering, priority labels, and due date tracking.</p>
             <div class="project-links">
-              <a href="#" class="btn btn-sm btn-primary">Live Demo</a>
+              <a href="projects/taskmanager.html" class="btn btn-sm btn-primary">Live Demo</a>
               <a href="#" class="btn btn-sm btn-outline">GitHub</a>
             </div>
           </div>
@@ -219,7 +213,7 @@
             <h3>Weather Dashboard</h3>
             <p>Real-time weather app using the OpenWeatherMap API. Features 5-day forecast and animated weather icons.</p>
             <div class="project-links">
-              <a href="#" class="btn btn-sm btn-primary">Live Demo</a>
+              <a href="projects/weather.html" class="btn btn-sm btn-primary">Live Demo</a>
               <a href="#" class="btn btn-sm btn-outline">GitHub</a>
             </div>
           </div>
@@ -236,7 +230,7 @@
             <h3>Blog Platform UI</h3>
             <p>A clean blog layout with dark mode, reading time estimate, tags, and a responsive card grid.</p>
             <div class="project-links">
-              <a href="#" class="btn btn-sm btn-primary">Live Demo</a>
+              <a href="projects/blog.html" class="btn btn-sm btn-primary">Live Demo</a>
               <a href="#" class="btn btn-sm btn-outline">GitHub</a>
             </div>
           </div>
@@ -253,7 +247,7 @@
             <h3>Scientific Calculator</h3>
             <p>A fully functional calculator with history log, keyboard support, and scientific functions.</p>
             <div class="project-links">
-              <a href="#" class="btn btn-sm btn-primary">Live Demo</a>
+              <a href="projects/calculator.html" class="btn btn-sm btn-primary">Live Demo</a>
               <a href="#" class="btn btn-sm btn-outline">GitHub</a>
             </div>
           </div>
@@ -270,7 +264,7 @@
             <h3>CSS Animation Showcase</h3>
             <p>A collection of pure CSS animations and transitions — loaders, hover effects, and page transitions.</p>
             <div class="project-links">
-              <a href="#" class="btn btn-sm btn-primary">Live Demo</a>
+              <a href="projects/cssshowcase.html" class="btn btn-sm btn-primary">Live Demo</a>
               <a href="#" class="btn btn-sm btn-outline">GitHub</a>
             </div>
           </div>
@@ -289,27 +283,27 @@
       <div class="contact-grid">
         <div class="contact-info">
           <h3>Let's Connect</h3>
-          <p>Whether you have a project idea, a question, or just want to say hi — my inbox is open!</p>
+          <p>Whether you want to collaborate, have a project idea, or just want to say hi — feel free to reach out. I check my inbox pretty regularly.</p>
           <div class="contact-items">
-            <a href="mailto:alex@example.com" class="contact-item">
+            <a href="mailto:starunhiga@example.com" class="contact-item">
               <span class="ci-icon">📧</span>
               <div>
                 <strong>Email</strong>
-                <span>alex@example.com</span>
+                <span>starunhiga@example.com</span>
               </div>
             </a>
             <a href="#" class="contact-item">
               <span class="ci-icon">💼</span>
               <div>
                 <strong>LinkedIn</strong>
-                <span>linkedin.com/in/alexchen</span>
+                <span>linkedin.com/in/tarun</span>
               </div>
             </a>
             <a href="#" class="contact-item">
               <span class="ci-icon">🐙</span>
               <div>
                 <strong>GitHub</strong>
-                <span>github.com/alexchen</span>
+                <span>github.com/tarun</span>
               </div>
             </a>
           </div>
@@ -349,7 +343,7 @@
   <footer class="footer">
     <div class="container">
       <div class="footer-top">
-        <a href="#home" class="nav-logo">AC</a>
+        <a href="#home" class="nav-logo">T</a>
         <ul class="footer-links">
           <li><a href="#about">About</a></li>
           <li><a href="#skills">Skills</a></li>
@@ -358,7 +352,7 @@
         </ul>
       </div>
       <div class="footer-bottom">
-        <p>© 2026 Alex Chen. Built with ❤️ using HTML, CSS &amp; JS.</p>
+        <p>© 2026 S Tarunhiga. Built with HTML, CSS &amp; JS — no frameworks, just vibes.</p>
         <button class="back-to-top" id="back-to-top" aria-label="Back to top">↑</button>
       </div>
     </div>

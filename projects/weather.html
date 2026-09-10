@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WeatherNow — Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0f172a;
+      --surface: rgba(255,255,255,0.05);
+      --surface2: rgba(255,255,255,0.1);
+      --border: rgba(255,255,255,0.12);
+      --text: #f1f5f9;
+      --text-muted: #94a3b8;
+      --accent: #38bdf8;
+      --radius: 16px;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family:'Inter',sans-serif;
+      background:var(--bg); color:var(--text);
+      min-height:100vh;
+    }
+    a { text-decoration:none; color:inherit; }
+    button { cursor:pointer; border:none; font-family:inherit; }
+
+    /* BG GRADIENT */
+    .bg-layer {
+      position:fixed; inset:0; z-index:0;
+      background:linear-gradient(160deg,#0f172a 0%,#1e3a5f 50%,#0f172a 100%);
+    }
+    .content { position:relative; z-index:1; }
+
+    /* TOPBAR */
+    .topbar {
+      display:flex; align-items:center; justify-content:space-between;
+      padding:1rem 2rem;
+    }
+    .logo { font-size:1.1rem; font-weight:700; color:var(--accent); }
+    .back-link { font-size:0.82rem; color:var(--text-muted); }
+    .back-link:hover { color:var(--accent); }
+
+    /* SEARCH */
+    .search-area { text-align:center; padding:1rem 1.5rem 2rem; }
+    .search-bar {
+      display:inline-flex; align-items:center; gap:0.5rem;
+      background:var(--surface2); border:1px solid var(--border);
+      border-radius:50px; padding:0.6rem 1rem; width:100%; max-width:400px;
+    }
+    .search-bar input {
+      background:none; border:none; outline:none;
+      color:var(--text); font-size:0.92rem; flex:1;
+    }
+    .search-bar input::placeholder { color:var(--text-muted); }
+    .search-bar button {
+      background:var(--accent); color:#fff;
+      border-radius:50px; padding:0.35rem 1rem;
+      font-size:0.82rem; font-weight:600;
+    }
+
+    /* MAIN CARD */
+    .main-grid { max-width:900px; margin:0 auto; padding:0 1.5rem 3rem; }
+    .current-card {
+      background:var(--surface2); border:1px solid var(--border);
+      border-radius:var(--radius); padding:2rem;
+      display:grid; grid-template-columns:1fr auto; gap:2rem; align-items:center;
+      margin-bottom:1.5rem;
+    }
+    .city-name { font-size:1.6rem; font-weight:700; margin-bottom:0.2rem; }
+    .weather-desc { color:var(--text-muted); margin-bottom:1rem; font-size:0.95rem; text-transform:capitalize; }
+    .temp-big { font-size:4rem; font-weight:300; color:var(--accent); line-height:1; }
+    .temp-unit { font-size:1.5rem; }
+    .weather-emoji { font-size:5rem; text-align:center; }
+    .weather-details {
+      display:flex; gap:1.5rem; flex-wrap:wrap; margin-top:1rem;
+    }
+    .detail-item { display:flex; flex-direction:column; gap:0.2rem; }
+    .detail-label { font-size:0.72rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.05em; }
+    .detail-value { font-size:0.95rem; font-weight:600; }
+
+    /* FORECAST */
+    .forecast-title { font-size:0.85rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.07em; margin-bottom:0.75rem; }
+    .forecast-grid {
+      display:grid; grid-template-columns:repeat(5,1fr); gap:0.75rem;
+    }
+    .forecast-card {
+      background:var(--surface); border:1px solid var(--border);
+      border-radius:12px; padding:1rem; text-align:center;
+    }
+    .forecast-day { font-size:0.78rem; color:var(--text-muted); margin-bottom:0.5rem; }
+    .forecast-emoji { font-size:1.8rem; margin-bottom:0.5rem; }
+    .forecast-temp { font-size:0.95rem; font-weight:600; color:var(--accent); }
+    .forecast-low { font-size:0.78rem; color:var(--text-muted); }
+
+    /* EXTRA CARDS */
+    .extra-grid {
+      display:grid; grid-template-columns:repeat(3,1fr); gap:0.75rem; margin-top:1rem;
+    }
+    .extra-card {
+      background:var(--surface); border:1px solid var(--border);
+      border-radius:12px; padding:1.25rem;
+    }
+    .extra-icon { font-size:1.5rem; margin-bottom:0.5rem; }
+    .extra-label { font-size:0.72rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:0.3rem; }
+    .extra-value { font-size:1.1rem; font-weight:600; }
+
+    /* CITY CHIPS */
+    .city-chips { display:flex; gap:0.5rem; margin-bottom:1.5rem; flex-wrap:wrap; }
+    .city-chip {
+      padding:0.3rem 0.85rem; border-radius:50px;
+      font-size:0.8rem; font-weight:500;
+      background:var(--surface); border:1px solid var(--border);
+      color:var(--text-muted);
+    }
+    .city-chip:hover, .city-chip.active {
+      background:var(--accent); color:#0f172a; border-color:var(--accent); font-weight:700;
+    }
+
+    footer { text-align:center; padding:1.5rem; font-size:0.78rem; color:var(--text-muted); }
+
+    @media(max-width:640px){
+      .current-card { grid-template-columns:1fr; }
+      .weather-emoji { text-align:left; }
+      .forecast-grid { grid-template-columns:repeat(3,1fr); }
+      .extra-grid { grid-template-columns:1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+<div class="bg-layer"></div>
+<div class="content">
+
+  <div class="topbar">
+    <div class="logo">🌤 WeatherNow</div>
+    <a href="../index.html" class="back-link">← Portfolio</a>
+  </div>
+
+  <div class="search-area">
+    <div class="search-bar">
+      <span>🔍</span>
+      <input type="text" id="search-input" placeholder="Search city..." />
+      <button id="search-btn">Search</button>
+    </div>
+  </div>
+
+  <div class="main-grid">
+    <div class="city-chips" id="city-chips"></div>
+
+    <div class="current-card">
+      <div>
+        <div class="city-name" id="city-name">Hyderabad</div>
+        <div class="weather-desc" id="weather-desc">Partly Cloudy</div>
+        <div class="temp-big"><span id="temp">34</span><span class="temp-unit">°C</span></div>
+        <div class="weather-details">
+          <div class="detail-item"><span class="detail-label">Feels like</span><span class="detail-value" id="feels-like">37°C</span></div>
+          <div class="detail-item"><span class="detail-label">Humidity</span><span class="detail-value" id="humidity">58%</span></div>
+          <div class="detail-item"><span class="detail-label">Wind</span><span class="detail-value" id="wind">14 km/h</span></div>
+          <div class="detail-item"><span class="detail-label">Visibility</span><span class="detail-value" id="visibility">8 km</span></div>
+        </div>
+      </div>
+      <div class="weather-emoji" id="weather-emoji">⛅</div>
+    </div>
+
+    <div class="forecast-title">5-Day Forecast</div>
+    <div class="forecast-grid" id="forecast-grid"></div>
+
+    <div class="extra-grid" id="extra-grid"></div>
+  </div>
+
+  <footer>WeatherNow — A demo project by S Tarunhiga · Uses simulated data</footer>
+</div>
+
+<script>
+  const cityData = {
+    'Hyderabad': {
+      desc:'Partly Cloudy', emoji:'⛅', temp:34, feels:37, humidity:58, wind:14, visibility:8,
+      uv:7, pressure:'1008 hPa', sunrise:'06:12', sunset:'18:44',
+      forecast:[
+        { day:'Mon', emoji:'☀️', high:36, low:26 },
+        { day:'Tue', emoji:'⛅', high:34, low:25 },
+        { day:'Wed', emoji:'🌧️', high:29, low:23 },
+        { day:'Thu', emoji:'🌦️', high:31, low:24 },
+        { day:'Fri', emoji:'☀️', high:35, low:26 },
+      ]
+    },
+    'Mumbai': {
+      desc:'Humid & Hazy', emoji:'🌫️', temp:30, feels:35, humidity:82, wind:18, visibility:4,
+      uv:5, pressure:'1010 hPa', sunrise:'06:30', sunset:'18:55',
+      forecast:[
+        { day:'Mon', emoji:'🌧️', high:29, low:25 },
+        { day:'Tue', emoji:'🌧️', high:28, low:24 },
+        { day:'Wed', emoji:'⛈️', high:27, low:23 },
+        { day:'Thu', emoji:'🌦️', high:28, low:24 },
+        { day:'Fri', emoji:'🌫️', high:30, low:25 },
+      ]
+    },
+    'Delhi': {
+      desc:'Clear Sky', emoji:'☀️', temp:38, feels:41, humidity:30, wind:9, visibility:12,
+      uv:10, pressure:'1005 hPa', sunrise:'05:48', sunset:'19:10',
+      forecast:[
+        { day:'Mon', emoji:'☀️', high:40, low:28 },
+        { day:'Tue', emoji:'☀️', high:39, low:27 },
+        { day:'Wed', emoji:'⛅', high:37, low:26 },
+        { day:'Thu', emoji:'⛅', high:36, low:25 },
+        { day:'Fri', emoji:'☀️', high:38, low:26 },
+      ]
+    },
+    'Bangalore': {
+      desc:'Light Rain', emoji:'🌦️', temp:22, feels:21, humidity:76, wind:12, visibility:7,
+      uv:4, pressure:'1015 hPa', sunrise:'06:08', sunset:'18:30',
+      forecast:[
+        { day:'Mon', emoji:'🌦️', high:23, low:18 },
+        { day:'Tue', emoji:'⛅', high:24, low:17 },
+        { day:'Wed', emoji:'☀️', high:26, low:17 },
+        { day:'Thu', emoji:'🌧️', high:22, low:16 },
+        { day:'Fri', emoji:'🌦️', high:23, low:17 },
+      ]
+    },
+    'Chennai': {
+      desc:'Hot & Sunny', emoji:'🌞', temp:37, feels:42, humidity:65, wind:16, visibility:9,
+      uv:9, pressure:'1007 hPa', sunrise:'06:00', sunset:'18:20',
+      forecast:[
+        { day:'Mon', emoji:'🌞', high:38, low:28 },
+        { day:'Tue', emoji:'⛅', high:36, low:27 },
+        { day:'Wed', emoji:'🌦️', high:33, low:26 },
+        { day:'Thu', emoji:'🌧️', high:30, low:25 },
+        { day:'Fri', emoji:'⛅', high:34, low:26 },
+      ]
+    },
+  };
+
+  const cities = Object.keys(cityData);
+  let activeCity = 'Hyderabad';
+
+  function renderCityChips() {
+    const wrap = document.getElementById('city-chips');
+    wrap.innerHTML = cities.map(c => `
+      <button class="city-chip ${c === activeCity ? 'active' : ''}" onclick="loadCity('${c}')">${c}</button>
+    `).join('');
+  }
+
+  function loadCity(name) {
+    const d = cityData[name];
+    if (!d) return;
+    activeCity = name;
+    document.getElementById('city-name').textContent    = name;
+    document.getElementById('weather-desc').textContent = d.desc;
+    document.getElementById('temp').textContent         = d.temp;
+    document.getElementById('weather-emoji').textContent = d.emoji;
+    document.getElementById('feels-like').textContent   = d.feels + '°C';
+    document.getElementById('humidity').textContent     = d.humidity + '%';
+    document.getElementById('wind').textContent         = d.wind + ' km/h';
+    document.getElementById('visibility').textContent   = d.visibility + ' km';
+
+    document.getElementById('forecast-grid').innerHTML = d.forecast.map(f => `
+      <div class="forecast-card">
+        <div class="forecast-day">${f.day}</div>
+        <div class="forecast-emoji">${f.emoji}</div>
+        <div class="forecast-temp">${f.high}°</div>
+        <div class="forecast-low">${f.low}°</div>
+      </div>
+    `).join('');
+
+    document.getElementById('extra-grid').innerHTML = `
+      <div class="extra-card"><div class="extra-icon">☀️</div><div class="extra-label">UV Index</div><div class="extra-value">${d.uv} — ${d.uv >= 8 ? 'Very High' : d.uv >= 6 ? 'High' : 'Moderate'}</div></div>
+      <div class="extra-card"><div class="extra-icon">🌡️</div><div class="extra-label">Pressure</div><div class="extra-value">${d.pressure}</div></div>
+      <div class="extra-card"><div class="extra-icon">🌅</div><div class="extra-label">Sunrise / Sunset</div><div class="extra-value">${d.sunrise} / ${d.sunset}</div></div>
+    `;
+
+    renderCityChips();
+  }
+
+  document.getElementById('search-btn').addEventListener('click', () => {
+    const val = document.getElementById('search-input').value.trim();
+    const match = cities.find(c => c.toLowerCase() === val.toLowerCase());
+    if (match) { loadCity(match); document.getElementById('search-input').value = ''; }
+    else alert(`"${val}" not in demo data. Try: ${cities.join(', ')}`);
+  });
+
+  document.getElementById('search-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter') document.getElementById('search-btn').click();
+  });
+
+  renderCityChips();
+  loadCity('Hyderabad');
+</script>
+</body>
+</html>
